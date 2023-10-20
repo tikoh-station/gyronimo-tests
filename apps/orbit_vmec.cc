@@ -188,9 +188,11 @@ int main(int argc, char* argv[]) {
 	/* Initialize helena equilibrium */
 	gyronimo::parser_vmec vmap(command_line[1]);
 	gyronimo::cubic_gsl_factory ifactory;
-	gyronimo::morphism_vmec m(&vmap, &ifactory);
-	gyronimo::metric_vmec g(&m);
-	gyronimo::equilibrium_vmec veq(&g, &ifactory);
+	gyronimo::morphism_cache<gyronimo::morphism_vmec> m(&vmap, &ifactory);
+	// gyronimo::metric_vmec g(&m);
+	// gyronimo::equilibrium_vmec veq(&g, &ifactory);
+	gyronimo::metric_cache<gyronimo::metric_vmec> g(&m);
+	gyronimo::IR3field_c1_cache<gyronimo::equilibrium_vmec> veq(&g, &ifactory);
 
 	size_t seed; command_line("seed", 0) >> seed;
 	if(seed == 0) {
