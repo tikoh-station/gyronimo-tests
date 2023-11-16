@@ -13,6 +13,9 @@
 #include <gyronimo/fields/equilibrium_helena.hh>
 #include <gyronimo/fields/equilibrium_circular.hh>
 #include <gyronimo/interpolators/bicubic_gsl.hh>
+#include <gyronimo/metrics/morphism_cache.hh>
+#include <gyronimo/metrics/metric_cache.hh>
+#include <gyronimo/fields/IR3field_c1_cache.hh>
 
 #include <gyronimo/dynamics/guiding_centre.hh>
 #include <gyronimo/dynamics/lorentz.hh>
@@ -196,6 +199,9 @@ int main(int argc, char* argv[]) {
 	gyronimo::parser_helena hmap(command_line[1]);
 	gyronimo::bicubic_gsl_factory ifactory(false,
 		(hmap.is_symmetric() ? 0 : 9), (hmap.is_symmetric() ? 9 : 0));
+	// gyronimo::morphism_helena m(&hmap, &ifactory);
+	// gyronimo::metric_helena g(&m, &ifactory);
+	// gyronimo::equilibrium_helena heq(&g, &ifactory);
 	gyronimo::morphism_cache<gyronimo::morphism_helena> m(&hmap, &ifactory);
 	gyronimo::metric_cache<gyronimo::metric_helena> g(&m, &ifactory);
 	gyronimo::IR3_field_c1_cache<gyronimo::equilibrium_helena> heq(&g, &ifactory);
@@ -299,7 +305,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "# args: ";
 	for(int i = 1; i < argc; i++) std::cout << argv[i] << " ";
 	std::cout << std::endl;
-	std::cout << "# l_ref = " << Lref << " [m];";
+	std::cout << "# seed = " << seed << " ;";
+	std::cout << " l_ref = " << Lref << " [m];";
 	std::cout << " v_ref = " << Vref << " [m/s];";
 	std::cout << " u_ref = " << Uref << " [eV];";
 	std::cout << " energy = " << energy << " [eV];";
